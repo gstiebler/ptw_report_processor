@@ -1,4 +1,4 @@
-
+﻿
 import pygtk
 pygtk.require('2.0')
 import gtk
@@ -13,12 +13,15 @@ class MainWindow:
         ok_button = gtk.Button("Ok")
         
         window = gtk.Window()
+        window.resize( 800, 100 )
+        window.set_title( "Conversor de relatórios PTW" )
         vbox = gtk.VBox( spacing = 5 )
         vbox.pack_start(input_folder_hbox, False, False, 5)
         vbox.pack_start(output_folder_hbox, False, False, 5)
         vbox.pack_start(ok_button, False, False, 5)
         
         window.add( vbox )
+        window.connect('delete-event', self.__on_window_destroy)
         window.show_all()
 
         ok_button.connect("clicked", self.__on_ok_clicked )
@@ -57,9 +60,19 @@ class MainWindow:
         
         return result
         
+    def __on_window_destroy(self, widget, event):
+        gtk.main_quit()
+        
     def get_input_folder( self ):
         return self.input_folder_entry.get_text()
         
     def get_output_folder( self ):
         return self.output_folder_entry.get_text()
+        
+    def show_message( self, message ):
+        md = gtk.MessageDialog(None, 
+            gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO, 
+            gtk.BUTTONS_CLOSE, message)
+        md.run()
+        md.destroy()
         
