@@ -1,4 +1,4 @@
-
+﻿
 import os
 from xlsxwriter.workbook import Workbook
 
@@ -25,7 +25,7 @@ def process_report( dir_reports, file_name ):
     i = 0
     output_line = 0
     while i < num_lines:
-        # pega a iesima linha do relatorio
+        # pega a iesima linha do relatório
         line = report_lines[i]
         # verifica se a linha contem '*FAULT BUS:'
         if line.find('*FAULT BUS:') > 0:
