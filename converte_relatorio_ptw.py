@@ -2,9 +2,10 @@
 import os
 from xlsxwriter.workbook import Workbook
 
-def process_report( dir_reports, file_name ):
-    
-    report_file_name = dir_reports + "/" + file_name
+from main_window import MainWindow
+
+def process_report( excel_output_folder, file_name ):
+    report_file_name = excel_output_folder + "/" + file_name
 
     # pega somente o nome do arquivo sem a extensao .RPT
     file_name_we = file_name.split('.')[0]
@@ -57,11 +58,18 @@ def process_report( dir_reports, file_name ):
     
     workbook.close()
 
+class MainPresenter:
 
+    def __init__( self ):
+        self.window = MainWindow( self )
+        
+    def ok_clicked( self ):
+        reports_folder = self.window.get_input_folder()
+        output_folder = self.window.get_output_folder()
 
-full_path = os.path.realpath(__file__)
-dir_reports = os.path.dirname(full_path) + "/relatorios"
+        for file in os.listdir(reports_folder):
+            if file.endswith(".RPT"):
+                process_report( output_folder, file )
+        
 
-for file in os.listdir(dir_reports):
-    if file.endswith(".RPT"):
-        process_report( dir_reports, file )
+MainPresenter()
