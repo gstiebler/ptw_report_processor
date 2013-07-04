@@ -71,5 +71,3 @@ class MainPresenter:
             if file.endswith(".RPT"):
                 process_report( output_folder, file )
         
-
-MainPresenter()

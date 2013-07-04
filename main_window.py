@@ -23,8 +23,6 @@ class MainWindow:
 
         ok_button.connect("clicked", self.__on_ok_clicked )
         
-        gtk.main()
-        
     def __create_folder_selection( self, label_text ):
         folder_label = gtk.Label( label_text )
         folder_entry = gtk.Entry()
