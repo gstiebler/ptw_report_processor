@@ -4,17 +4,20 @@ from xlsxwriter.workbook import Workbook
 
 from main_window import MainWindow
 
-def process_report( excel_output_folder, file_name ):
-    report_file_name = excel_output_folder + "/" + file_name
+def process_report( excel_output_folder, reports_folder, file_name ):
+    report_file_name = reports_folder + "/" + file_name
 
     # pega somente o nome do arquivo sem a extensao .RPT
     file_name_we = file_name.split('.')[0]
 
     # abre o arquivo de entrada
     report_file = open(report_file_name, "r")
+    print "Abrindo file " + report_file_name
 
     # abre o arquivo de saida
-    workbook = Workbook(file_name_we + ".xlsx")
+    excel_output_file = excel_output_folder + "/" + file_name_we + ".xlsx"
+    print "Gerando arquivo " + excel_output_file
+    workbook = Workbook( excel_output_file )
     worksheet = workbook.add_worksheet()
 
     # pega as linhas do arquivo
@@ -69,5 +72,6 @@ class MainPresenter:
 
         for file in os.listdir(reports_folder):
             if file.endswith(".RPT"):
-                process_report( output_folder, file )
-        
+                process_report( output_folder, reports_folder, file )
+
+        self.window.show_message( "Processo concluído." )
