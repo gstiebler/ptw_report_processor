@@ -46,11 +46,12 @@ def process_report( excel_output_folder, reports_folder, file_name ):
             # divide as palavras da linha
             line_parts = line.split()
             
-            if len( line_parts ) < 7:
+            if len( line_parts ) < 8:
                 break
             # percorre os valores da linha. O primeiro valor eh a 4a palavra
             for n in range(3, 8):
-                worksheet.write( output_line, n - 2, line_parts[n] )
+                text = line_parts[n]
+                worksheet.write( output_line, n - 2, text )
                 
             output_line += 1
             
