@@ -18,7 +18,6 @@ def process_report( excel_output_folder, reports_folder, file_name ):
     excel_output_file = excel_output_folder + "/" + file_name_we + ".xlsx"
     print "Gerando arquivo " + excel_output_file
     workbook = Workbook( excel_output_file )
-    worksheet = workbook.add_worksheet()
 
     # pega as linhas do arquivo
     report_lines = report_file.readlines()
@@ -27,25 +26,37 @@ def process_report( excel_output_folder, reports_folder, file_name ):
     num_lines = len(report_lines)
 
     i = 0
-    output_line = 0
     while i < num_lines:
         # pega a iesima linha do relatório
         line = report_lines[i]
-        # verifica se a linha contem '*FAULT BUS:'
-        if line.find('*FAULT BUS:') > 0:
-            if process_line( worksheet, output_line, report_lines, i ) == False:
-                break
-            output_line += 1
-            i += 5
+        if line.find('T H R E E   P H A S E   I E C  6 0 9 0 9   F A U L T   R E P O R T') > 0:
+            i = process_three_phase( i, num_lines, workbook, report_lines )
             
         # passa pra proxima linha
         i += 1
         
     # fecha o arquivo de saida
-    
     workbook.close()
     
-def process_line( worksheet, output_line, report_lines, i ):
+def process_three_phase( i, num_lines, workbook, report_lines ):
+    worksheet = workbook.add_worksheet()
+    output_line = 0
+    
+    while i < num_lines:
+        # pega a iesima linha do relatório
+        line = report_lines[i]
+        # verifica se a linha contem '*FAULT BUS:'
+        if line.find('*FAULT BUS:') > 0:
+            if process_line_three_phase( worksheet, output_line, report_lines, i ) == False:
+                return i
+            output_line += 1
+            i += 5
+        # passa pra proxima linha
+        i += 1
+        
+    return i
+    
+def process_line_three_phase( worksheet, output_line, report_lines, i ):
     # pega a iesima linha do relatório
     line = report_lines[i]
     # separa as palavras da linha
