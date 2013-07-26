@@ -1,5 +1,5 @@
 ﻿ 
-def process_unabalanced_fault( i, num_lines, workbook, report_lines ):
+def process_unbalanced_fault( i, num_lines, workbook, report_lines, report_processor ):
     worksheet = workbook.add_worksheet('UnbalancedFault')
     output_line = 0
     
@@ -8,12 +8,18 @@ def process_unabalanced_fault( i, num_lines, workbook, report_lines ):
         line = report_lines[i]
         # verifica se a linha contem '*FAULT BUS:'
         if line.find('*FAULT BUS:') > 0:
-            if process_line_three_phase( worksheet, output_line, report_lines, i ) == False:
+            if process_line_unabalanced_fault( worksheet, output_line, report_lines, i ) == False:
                 return i
             output_line += 1
             i += 5
         # passa pra proxima linha
         i += 1
+        
+        if i == num_lines:
+            return i
+        # verifica se a linha contém o título de um novo relatório
+        if report_processor.has_report_title(report_lines[i]):
+            return i - 1;
         
     return i
     
@@ -25,7 +31,7 @@ def process_line_unabalanced_fault( worksheet, output_line, report_lines, i ):
     # o nome do painel eh a terceira palavra da linha
     panel_name = line_parts[2]
     # adiciona o painel na linha de saida
-    worksheet.write( output_line, 0,  panel_name )
+    worksheet.write( output_line, 0, panel_name )
     # pula 9 linhas
     i += 9
     # pega a linha do relatorio com os valores
@@ -38,4 +44,4 @@ def process_line_unabalanced_fault( worksheet, output_line, report_lines, i ):
     # percorre os valores da linha. O primeiro valor eh a 4a palavra
     for n in range(1, 8):
         text = line_parts[n]
-        worksheet.write( output_line, n - 2, text )
+        worksheet.write( output_line, n, text )

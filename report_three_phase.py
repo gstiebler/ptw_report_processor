@@ -1,5 +1,5 @@
 ﻿ 
-def process_three_phase( i, num_lines, workbook, report_lines ):
+def process_three_phase( i, num_lines, workbook, report_lines, report_processor ):
     worksheet = workbook.add_worksheet('ThreePhase')
     output_line = 0
     
@@ -15,6 +15,12 @@ def process_three_phase( i, num_lines, workbook, report_lines ):
         # passa pra proxima linha
         i += 1
         
+        if i == num_lines:
+            return i
+        # verifica se a linha contém o título de um novo relatório
+        if report_processor.has_report_title(report_lines[i]):
+            return i - 1;
+        
     return i
     
 def process_line_three_phase( worksheet, output_line, report_lines, i ):
@@ -25,7 +31,7 @@ def process_line_three_phase( worksheet, output_line, report_lines, i ):
     # o nome do painel eh a terceira palavra da linha
     panel_name = line_parts[2]
     # adiciona o painel na linha de saida
-    worksheet.write( output_line, 0,  panel_name )
+    worksheet.write( output_line, 0, panel_name )
     # pula 5 linhas
     i += 5
     # pega a linha do relatorio com os valores

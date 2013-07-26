@@ -26,19 +26,29 @@ class ReportProcessor:
 
         # pega numero de linhas do relatorio
         num_lines = len(report_lines)
-
+        
         i = 0
         while i < num_lines:
             
             # pega a iesima linha do relatório
             line = report_lines[i]
             if line.find('T H R E E   P H A S E   I E C  6 0 9 0 9   F A U L T   R E P O R T') > 0:
-                i = report_three_phase.process_three_phase( i, num_lines, workbook, report_lines )
+                i = report_three_phase.process_three_phase( i, num_lines, workbook, report_lines, self )
             elif line.find('U N B A L A N C E D   I E C  6 0 9 0 9   F A U L T   R E P O R T') > 0:
-                i = report_unabalanced_fault.process_unabalanced_fault( i, num_lines, workbook, report_lines )    
+                i = report_unbalanced_fault.process_unbalanced_fault( i, num_lines, workbook, report_lines, self )    
                 
             # passa pra proxima linha
             i += 1
             
         # fecha o arquivo de saida
         workbook.close()     
+        
+        
+    def has_report_title(self, line):
+        if line.find('T H R E E   P H A S E   I E C  6 0 9 0 9   F A U L T   R E P O R T') > 0:
+            return True
+        elif line.find('U N B A L A N C E D   I E C  6 0 9 0 9   F A U L T   R E P O R T') > 0:
+            return True
+        
+        return False
+            
