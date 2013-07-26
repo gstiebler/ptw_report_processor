@@ -69,6 +69,12 @@ class MainWindow:
     def get_output_folder( self ):
         return self.output_folder_entry.get_text()
         
+    def set_input_folder( self, folder ):
+        self.input_folder_entry.set_text(folder)
+        
+    def set_output_folder( self, folder ):
+        self.output_folder_entry.set_text(folder)
+        
     def show_message( self, message ):
         md = gtk.MessageDialog(None, 
             gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO, 

@@ -4,6 +4,7 @@ from xlsxwriter.workbook import Workbook
 
 from main_window import MainWindow
 import report_three_phase
+import report_unbalanced_fault
 
 def process_report( excel_output_folder, reports_folder, file_name ):
     report_file_name = reports_folder + "/" + file_name
@@ -32,6 +33,8 @@ def process_report( excel_output_folder, reports_folder, file_name ):
         line = report_lines[i]
         if line.find('T H R E E   P H A S E   I E C  6 0 9 0 9   F A U L T   R E P O R T') > 0:
             i = report_three_phase.process_three_phase( i, num_lines, workbook, report_lines )
+        elif line.find('U N B A L A N C E D   I E C  6 0 9 0 9   F A U L T   R E P O R T') > 0:
+            i = report_unabalanced_fault.process_unabalanced_fault( i, num_lines, workbook, report_lines )    
             
         # passa pra proxima linha
         i += 1
@@ -43,6 +46,15 @@ class MainPresenter:
 
     def __init__( self ):
         self.window = MainWindow( self )
+        
+        path_input = os.path.dirname(__file__) + "\\relatorios_rpt"
+        path_output = os.path.dirname(__file__) + "\\saida_excel"
+        
+        if os.path.isdir(path_input):
+            self.window.set_input_folder(path_input)
+            
+        if os.path.isdir(path_output):
+            self.window.set_output_folder(path_output)
         
     def ok_clicked( self ):
         reports_folder = self.window.get_input_folder()

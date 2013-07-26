@@ -1,6 +1,6 @@
 ﻿ 
-def process_three_phase( i, num_lines, workbook, report_lines ):
-    worksheet = workbook.add_worksheet('ThreePhase')
+def process_unabalanced_fault( i, num_lines, workbook, report_lines ):
+    worksheet = workbook.add_worksheet('UnbalancedFault')
     output_line = 0
     
     while i < num_lines:
@@ -17,7 +17,7 @@ def process_three_phase( i, num_lines, workbook, report_lines ):
         
     return i
     
-def process_line_three_phase( worksheet, output_line, report_lines, i ):
+def process_line_unabalanced_fault( worksheet, output_line, report_lines, i ):
     # pega a iesima linha do relatório
     line = report_lines[i]
     # separa as palavras da linha
@@ -26,8 +26,8 @@ def process_line_three_phase( worksheet, output_line, report_lines, i ):
     panel_name = line_parts[2]
     # adiciona o painel na linha de saida
     worksheet.write( output_line, 0,  panel_name )
-    # pula 5 linhas
-    i += 5
+    # pula 9 linhas
+    i += 9
     # pega a linha do relatorio com os valores
     line = report_lines[i]
     # divide as palavras da linha
@@ -36,6 +36,6 @@ def process_line_three_phase( worksheet, output_line, report_lines, i ):
     if len( line_parts ) < 8:
         return False
     # percorre os valores da linha. O primeiro valor eh a 4a palavra
-    for n in range(3, 8):
+    for n in range(1, 8):
         text = line_parts[n]
         worksheet.write( output_line, n - 2, text )
