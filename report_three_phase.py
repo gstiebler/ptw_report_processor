@@ -1,7 +1,18 @@
 ﻿ 
 def process_three_phase( i, num_lines, workbook, report_lines, report_processor ):
     worksheet = workbook.add_worksheet('ThreePhase')
-    output_line = 0
+    output_line = 1
+    
+    bold = workbook.add_format({'bold': True})
+    worksheet.write( 0, 0, 'Nome', bold )
+    worksheet.write( 0, 1, 'Ik"(kA)', bold )
+    worksheet.write( 0, 2, 'iDC(kA)', bold )
+    worksheet.write( 0, 3, 'ip(kA)', bold )
+    worksheet.write( 0, 4, 'Ib(kA)', bold )
+    worksheet.write( 0, 5, 'Ik(kA)', bold )
+    
+    # define a largura da primeira coluna para 30
+    worksheet.set_column(0, 0, 30)
     
     while i < num_lines:
         # pega a iesima linha do relatório
